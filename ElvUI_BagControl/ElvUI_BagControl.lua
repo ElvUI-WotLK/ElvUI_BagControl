@@ -15,7 +15,6 @@ P["BagControl"] = {
 		["Bank"] = true,
 		["GB"] = true,
 		["AH"] = true,
-		["VS"] = true,
 		["TS"] = true,
 		["Trade"] = true
 	},
@@ -25,7 +24,6 @@ P["BagControl"] = {
 		["Bank"] = true,
 		["GB"] = true,
 		["AH"] = true,
-		["VS"] = true,
 		["TS"] = true,
 		["Trade"] = true
 	}
@@ -90,18 +88,13 @@ function BC:InsertOptions()
 						type = "toggle",
 						name = BUTTON_LAG_AUCTIONHOUSE
 					},
-					VS = {
-						order = 6,
-						type = "toggle",
-						name = VOID_STORAGE
-					},
 					TS = {
-						order = 7,
+						order = 6,
 						type = "toggle",
 						name = TRADESKILLS
 					},
 					Trade = {
-						order = 8,
+						order = 7,
 						type = "toggle",
 						name = TRADE
 					}
@@ -141,18 +134,13 @@ function BC:InsertOptions()
 						type = "toggle",
 						name = BUTTON_LAG_AUCTIONHOUSE
 					},
-					VS = {
-						order = 6,
-						type = "toggle",
-						name = VOID_STORAGE
-					},
 					TS = {
-						order = 7,
+						order = 6,
 						type = "toggle",
 						name = TRADESKILLS
 					},
 					Trade = {
-						order = 8,
+						order = 7,
 						type = "toggle",
 						name = TRADE
 					}
@@ -168,7 +156,6 @@ local OpenEvents = {
 	["BANKFRAME_OPENED"] = "Bank",
 	["GUILDBANKFRAME_OPENED"] = "GB",
 	["AUCTION_HOUSE_SHOW"] = "AH",
-	["VOID_STORAGE_OPEN"] = "VS",
 	["TRADE_SKILL_SHOW"] = "TS",
 	["TRADE_SHOW"] = "Trade"
 }
@@ -179,7 +166,6 @@ local CloseEvents = {
 	["BANKFRAME_CLOSED"] = "Bank",
 	["GUILDBANKFRAME_CLOSED"] = "GB",
 	["AUCTION_HOUSE_CLOSED"] = "AH",
-	["VOID_STORAGE_CLOSE"] = "VS",
 	["TRADE_SKILL_CLOSE"] = "TS",
 	["TRADE_CLOSED"] = "Trade"
 }
