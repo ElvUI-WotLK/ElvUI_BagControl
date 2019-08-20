@@ -5,10 +5,10 @@ local B = E:GetModule("Bags")
 local EP = LibStub("LibElvUIPlugin-1.0")
 local addonName, addonTable = ...
 
-local format = string.format
+local pairs = pairs
 
 P["BagControl"] = {
-	["Enabled"] = true,
+	["Enabled"] = false,
 	["Open"] = {
 		["Mail"] = true,
 		["Vendor"] = true,
@@ -29,18 +29,13 @@ P["BagControl"] = {
 	}
 }
 
-local function ColorizeSettingName(settingName)
-	return format("|cff1784d1%s|r", settingName)
-end
-
 function BC:InsertOptions()
-	E.Options.args.BagControl = {
-		order = 53,
+	E.Options.args.plugins.args.BagControl = {
 		type = "group",
 		childGroups = "tab",
-		name = ColorizeSettingName(L["Bag Control"]),
-		get = function(info) return E.db.BagControl[ info[#info] ] end,
-		set = function(info, value) E.db.BagControl[ info[#info] ] = value; end,
+		name = L["Bag Control"],
+		get = function(info) return E.db.BagControl[info[#info]] end,
+		set = function(info, value) E.db.BagControl[info[#info]] = value end,
 		args = {
 			header = {
 				order = 1,
@@ -51,17 +46,17 @@ function BC:InsertOptions()
 				order = 2,
 				type = "toggle",
 				name = L["Enable"],
-				set = function(info, value) E.db.BagControl[ info[#info] ] = value; BC:Update() end,
-				disabled = function() return not E.bags end
+				set = function(info, value) E.db.BagControl[info[#info]] = value; BC:Update() end,
+				disabled = function() return not B.Initialized end
 			},
 			Open = {
 				order = 3,
 				type = "group",
 				name = L["Open bags when the following windows open:"],
 				guiInline = true,
-				get = function(info) return E.db.BagControl.Open[ info[#info] ] end,
-				set = function(info, value) E.db.BagControl.Open[ info[#info] ] = value; end,
-				disabled = function() return not E.bags or not E.db.BagControl.Enabled end,
+				get = function(info) return E.db.BagControl.Open[info[#info]] end,
+				set = function(info, value) E.db.BagControl.Open[info[#info]] = value end,
+				disabled = function() return not B.Initialized or not E.db.BagControl.Enabled end,
 				args = {
 					Mail = {
 						order = 1,
@@ -105,9 +100,9 @@ function BC:InsertOptions()
 				type = "group",
 				name = L["Close bags when the following windows close:"],
 				guiInline = true,
-				get = function(info) return E.db.BagControl.Close[ info[#info] ] end,
-				set = function(info, value) E.db.BagControl.Close[ info[#info] ] = value; end,
-				disabled = function() return not E.bags or not E.db.BagControl.Enabled end,
+				get = function(info) return E.db.BagControl.Close[info[#info]] end,
+				set = function(info, value) E.db.BagControl.Close[info[#info]] = value end,
+				disabled = function() return not B.Initialized or not E.db.BagControl.Enabled end,
 				args = {
 					Mail = {
 						order = 1,
@@ -171,24 +166,24 @@ local CloseEvents = {
 }
 
 local function EventHandler(self, event, ...)
-	if(not E.bags) then return end
+	if not B.Initialized then return end
 
-	if(OpenEvents[event]) then
-		if(event == "BANKFRAME_OPENED") then
+	if OpenEvents[event]  then
+		if event == "BANKFRAME_OPENED" then
 			B:OpenBank()
-			if(not E.db.BagControl.Open[OpenEvents[event]]) then
+			if not E.db.BagControl.Open[OpenEvents[event]] then
 				B.BagFrame:Hide()
 			end
 			return
-		elseif(E.db.BagControl.Open[OpenEvents[event]]) then
+		elseif E.db.BagControl.Open[OpenEvents[event]] then
 			B:OpenBags()
 			return
 		else
 			B:CloseBags()
 			return
 		end
-	elseif(CloseEvents[event]) then
-		if(E.db.BagControl.Close[CloseEvents[event]]) then
+	elseif CloseEvents[event] then
+		if E.db.BagControl.Close[CloseEvents[event]] then
 			B:CloseBags()
 			return
 		else
